@@ -9,8 +9,32 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  email    String @unique
+  id       Int        @id @default(autoincrement())
+  username String     @unique
+  email    String     @unique
   password String
+  Habits   Habit[]
+  HabitLog HabitLog[]
+}
+
+model Habit {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  title       String
+  description String?
+  frequency   String
+  target      Int
+  createdAt   DateTime   @default(now())
+  HabitLog    HabitLog[]
+}
+
+model HabitLog {
+  id      Int      @id @default(autoincrement())
+  habitId Int
+  habit   Habit    @relation(fields: [habitId], references: [id])
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
+  date    DateTime
+  value   Int
 }
